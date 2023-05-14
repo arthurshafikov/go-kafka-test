@@ -3,7 +3,6 @@ package services
 import (
 	"fmt"
 	"math/rand"
-	"time"
 )
 
 type KafkaWriter interface {
@@ -35,8 +34,6 @@ func (o *OrderService) Cancelled() {
 	o.kafkaWriter.Write("cancelled", fmt.Sprintf("Order #%v has been cancelled!", o.getRandomOrderID()))
 }
 
-func (o *OrderService) getRandomOrderID() int64 {
-	randomizer := rand.NewSource(time.Now().Unix())
-
-	return randomizer.Int63()
+func (o *OrderService) getRandomOrderID() int {
+	return rand.Intn(1000)
 }

@@ -15,11 +15,12 @@ type Kafka struct {
 func NewKafka() *Kafka {
 	return &Kafka{
 		writer: &kafka.Writer{
-			Addr:         kafka.TCP("localhost:9092", "localhost:9093", "localhost:9094"),
-			Topic:        "orders",
-			Balancer:     &kafka.LeastBytes{},
-			RequiredAcks: kafka.RequireAll,
-			BatchTimeout: time.Second,
+			Addr:                   kafka.TCP("localhost:9092"),
+			Topic:                  "orders",
+			AllowAutoTopicCreation: true,
+			Balancer:               &kafka.LeastBytes{},
+			RequiredAcks:           kafka.RequireAll,
+			BatchTimeout:           time.Second,
 		},
 	}
 }
@@ -38,7 +39,7 @@ func (k *Kafka) Write(messageType, message string) {
 
 func (k *Kafka) Close() {
 	if err := k.writer.Close(); err != nil {
-		log.Fatal("failed to write messages:", err)
+		log.Fatal("failed to close channel:", err)
 	}
 
 }
